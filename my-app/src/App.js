@@ -1,12 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 import Addingstudent from './Addingstudent';
+import Addingassignment from './Addingassignemt';
 
 function App() {
   return (
     <div className="App">
-      <Addingstudent/>
-      {/* <header className="App-header">
+      {/* <Addingstudent/> */}
+      <Addingassignment/>
+            {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.

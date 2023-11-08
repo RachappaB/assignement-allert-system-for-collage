@@ -14,12 +14,11 @@ show tables;
  );
  
 CREATE TABLE assignment (
-    a_id VARCHAR(5) NOT NULL,
     sub VARCHAR(25) NOT NULL,
     `text` VARCHAR(50) NOT NULL,
     link VARCHAR(50) NOT NULL,
     deadline DATETIME NOT NULL,
-    PRIMARY KEY (a_id)
+    PRIMARY KEY (sub)
 );
 
 CREATE TABLE submited (
