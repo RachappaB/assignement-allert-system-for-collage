@@ -36,8 +36,9 @@ router.post('/', async (req, res) =>{
     if (connection) {
       connection.release();
     }
-      res.send('respond with a resource');
 }
+      res.send('respond with a resource');
+
 });
 
 module.exports = router;

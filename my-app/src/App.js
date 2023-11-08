@@ -6,7 +6,7 @@ import Addingassignment from './Addingassignemt';
 function App() {
   return (
     <div className="App">
-      {/* <Addingstudent/> */}
+      <Addingstudent/>
       <Addingassignment/>
             {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

@@ -36,8 +36,21 @@ router.post('/', async (req, res) =>{
     if (connection) {
       connection.release();
     }
-      res.send('respond with a resource');
+      
+    
 }
+    
+res.send('respond with a resource');
+assign_to_all(sub)
 });
 
 module.exports = router;
+
+
+
+function assign_to_all(sub)
+{
+    console.log("everyrhin ",sub)
+
+
+}

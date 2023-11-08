@@ -23,10 +23,23 @@ CREATE TABLE assignment (
 
 CREATE TABLE submited (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    a_id VARCHAR(5) NOT NULL,
+    sub VARCHAR(5) NOT NULL,
 	SRN VARCHAR(20) NOT NULL,
-	FOREIGN KEY (a_id) REFERENCES assignment(a_id),
+    submit binary default false,
+	FOREIGN KEY (sub) REFERENCES assignment(sub),
     FOREIGN KEY (SRN) REFERENCES student(SRN)
     );
     
+    
+    DELIMITER //
+CREATE TRIGGER assignment_insert_trigger AFTER INSERT ON assignment
+FOR EACH ROW
+BEGIN
+  INSERT INTO submited (sub, SRN) 
+  SELECT NEW.sub, s.srn
+  FROM student s;
+END;
+//
+DELIMITER ;
+
 
