@@ -1,7 +1,10 @@
 var express = require('express');
+require('dotenv').config()
+
 var router = express.Router();
 const mysql = require('mysql2/promise');
 // const ical = require('ical-generator');
+var nodemailer = require('nodemailer')
 
 const pool = mysql.createPool({
   host: "localhost",
@@ -12,6 +15,8 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0
 });
+
+
 
 
 
@@ -41,16 +46,81 @@ router.post('/', async (req, res) =>{
 }
     
 res.send('respond with a resource');
-assign_to_all(sub)
+assign_to_all(sub,text,link,deadline)
 });
 
 module.exports = router;
 
 
 
-function assign_to_all(sub)
+
+
+
+
+
+async function  assign_to_all(sub,text,link,deadline)
 {
-    console.log("everyrhin ",sub)
+
+   
 
 
+    let connection;
+  try {
+    connection =  await pool.getConnection();
+    const sql = 'SELECT gmail FROM student';
+
+    const [rows] = await connection.execute(sql);
+        const emailList = rows.map((row) => row.gmail);
+
+        console.log(emailList);
+        emailList.forEach((email) => {
+      send_gmail(email,sub,text,link,deadline);
+    });
+
+
+
+
+
+} catch (error) {
+    console.error('Error inserting data:', error);
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+
+}
+
+}
+
+function send_gmail(email,sub,text,link,deadline)
+{
+    var transporter =  nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.Email,
+      pass: process.env.Password
+    },
+    port: 465,
+    host: 'smtp.gmail.com'
+  });
+  var mailOptions = {
+    from: process.env.Email,
+    to: email,
+    subject: sub,
+    html: `
+      <p><h2>Assignment Topic: ${sub}</h2></p>
+      <p>Assignment Description: ${text}</p>
+      <p>Assignment Data: Some important data goes here...</p>
+      <p>Link: <a href="${link}">Visit Example Website</a></p>
+      <p>Deadline: ${deadline}</p>
+    `
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
 }
