@@ -1,10 +1,16 @@
 var express = require('express');
 require('dotenv').config()
+const fs = require('fs')
 
 var router = express.Router();
 const mysql = require('mysql2/promise');
 // const ical = require('ical-generator');
 var nodemailer = require('nodemailer')
+const qrcode = require('qrcode-terminal');
+
+
+
+
 
 const pool = mysql.createPool({
   host: "localhost",
@@ -46,7 +52,10 @@ router.post('/', async (req, res) =>{
 }
     
 res.send('respond with a resource');
+
+// this belove function to email all whatsapp
 assign_to_all(sub,text,link,deadline)
+
 });
 
 module.exports = router;
@@ -68,17 +77,31 @@ async function  assign_to_all(sub,text,link,deadline)
   try {
     connection =  await pool.getConnection();
     const sql = 'SELECT gmail FROM student';
+        const sql_whatsapp = 'SELECT phone FROM student';
 
-    const [rows] = await connection.execute(sql);
-        const emailList = rows.map((row) => row.gmail);
 
-        console.log(emailList);
-        emailList.forEach((email) => {
-      send_gmail(email,sub,text,link,deadline);
+    // const [rows] = await connection.execute(sql);
+    //     const emailList = rows.map((row) => row.gmail);
+
+    //     console.log(emailList);
+    //     emailList.forEach((email) => {
+    //         // belove code to call gmail
+    //   send_gmail(email,sub,text,link,deadline);
+
+      
+    // });
+
+
+ const [rows] = await connection.execute(sql_whatsapp);
+        const phonelist = rows.map((row) => row.phone);
+
+        console.log(phonelist);
+        phonelist.forEach((phone) => {
+            // belove code to call gmail
+      // send_whatsapp(phone,sub,text,link,deadline);
+
+      
     });
-
-
-
 
 
 } catch (error) {
@@ -124,3 +147,6 @@ function send_gmail(email,sub,text,link,deadline)
     }
   });
 }
+
+
+ 
